@@ -4,7 +4,7 @@ package cn.c.core.util;
  * 
  * @author hz453@126.com
  */
-public class StringUtils extends org.springframework.util.StringUtils {
+public class StringUtil extends org.springframework.util.StringUtils {
 	public static boolean isNullOrEmpty(String string) {
 		if(string == null) {
 			return true;
@@ -14,5 +14,10 @@ public class StringUtils extends org.springframework.util.StringUtils {
 			return false;
 		}
 	}
+	
+	/**
+	 * 防止实例化
+	 */
+	private StringUtil(){}
 
 }

@@ -26,8 +26,8 @@ import cn.c.core.common.constant.PaginationType;
 import cn.c.core.domain.IdEntity;
 import cn.c.core.excepion.ValidationExcepion;
 import cn.c.core.service.CrudService;
-import cn.c.core.util.EntityUtils;
-import cn.c.core.util.StringUtils;
+import cn.c.core.util.EntityUtil;
+import cn.c.core.util.StringUtil;
 
 /**
  * 
@@ -62,10 +62,10 @@ public abstract class CrudController<T extends IdEntity, S extends CrudService<T
 			ModelAndView modelAndView) {
 		modelAndView.setViewName(this.to(LIST_PATH));
 		modelAndView.addObject("paginationType", paginationType);
-		if(StringUtils.isNullOrEmpty(keyword)) {
+		if(StringUtil.isNullOrEmpty(keyword)) {
 			keyword = search;
 		}
-		if(!StringUtils.isNullOrEmpty(keyword)) {
+		if(!StringUtil.isNullOrEmpty(keyword)) {
 			
 			// TODO 此处因为使用的容器是tomcat且tomcat的Connector的URIEconding是ISO-8859-1
 			if("GET".equals(this.getHttpServletRequest().getMethod().toUpperCase())) {
@@ -176,10 +176,10 @@ public abstract class CrudController<T extends IdEntity, S extends CrudService<T
 			@RequestParam(required = false, defaultValue="") String search) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("paginationType", paginationType);
-		if(StringUtils.isNullOrEmpty(keyword)) {
+		if(StringUtil.isNullOrEmpty(keyword)) {
 			keyword = search;
 		}
-		if(!StringUtils.isNullOrEmpty(keyword)) {
+		if(!StringUtil.isNullOrEmpty(keyword)) {
 			
 			// TODO 此处因为使用的容器是tomcat且tomcat的Connector的URIEconding是ISO-8859-1
 			if("GET".equals(this.getHttpServletRequest().getMethod().toUpperCase())) {
@@ -256,8 +256,8 @@ public abstract class CrudController<T extends IdEntity, S extends CrudService<T
 			} else if(o instanceof Iterable) {
 				continue;
 			} else {
-				Method method = EntityUtils.getSeterMethod(t.getClass(), key, true);
-				EntityUtils.invoke(t, method, submitMap.get(key));
+				Method method = EntityUtil.getSeterMethod(t.getClass(), key, true);
+				EntityUtil.invoke(t, method, submitMap.get(key));
 				//m.invoke(t, submitMap.get(key));	//反射
 			}
 		}

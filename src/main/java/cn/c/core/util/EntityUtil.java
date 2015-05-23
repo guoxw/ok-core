@@ -13,7 +13,7 @@ import java.util.List;
  * 
  * @author hz453@126.com
  */
-public class EntityUtils {
+public class EntityUtil {
 	
     public static Class<?> findParameterizedType(Class<?> clazz, int index)
     {
@@ -224,6 +224,9 @@ public class EntityUtils {
 	}
 	
 
-
+	/**
+	 * 防止实例化
+	 */
+	private EntityUtil(){}
 
 }

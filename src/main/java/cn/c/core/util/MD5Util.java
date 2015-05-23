@@ -31,4 +31,9 @@ public class MD5Util {
 			return null;
 		}
 	}
+	
+	/**
+	 * 防止实例化
+	 */
+	private MD5Util(){}
 }

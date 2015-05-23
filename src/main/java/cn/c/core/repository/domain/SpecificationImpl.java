@@ -8,7 +8,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import cn.c.core.domain.IdEntity;
-import cn.c.core.util.EntityUtils;
+import cn.c.core.util.EntityUtil;
 
 public class SpecificationImpl<T extends IdEntity> implements org.springframework.data.jpa.domain.Specification<T> {
 	private String[] searchFields;
@@ -57,7 +57,7 @@ public class SpecificationImpl<T extends IdEntity> implements org.springframewor
 				if(lv == 1){
 				}else if(lv == 2) {
 					join = r.join(field[0], JoinType.LEFT);
-					join.as(EntityUtils.getGeterReturnType(clazz, field[0], true));
+					join.as(EntityUtil.getGeterReturnType(clazz, field[0], true));
 				}else{
 					continue;
 				}

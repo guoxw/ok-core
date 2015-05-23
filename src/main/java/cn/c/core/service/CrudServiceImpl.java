@@ -13,8 +13,8 @@ import cn.c.core.dao.CrudDao;
 import cn.c.core.domain.IdEntity;
 import cn.c.core.repository.CrudRepository;
 import cn.c.core.repository.domain.SpecificationImpl;
-import cn.c.core.util.EntityUtils;
-import cn.c.core.util.StringUtils;
+import cn.c.core.util.EntityUtil;
+import cn.c.core.util.StringUtil;
 
 /**
  * 
@@ -105,13 +105,13 @@ public abstract class CrudServiceImpl<T extends IdEntity, R extends CrudReposito
 		String[] keywords = null;
 		SpecificationImpl<T> specification = null;
 
-		if(StringUtils.hasText(keyword)) {
+		if(StringUtil.hasText(keyword)) {
 			keywords = keyword.split(" ");
 		} else {
 			keywords = new String[]{};
 		}
 		specification = this.beforeGetItems(paginationType, pageable, keywords, args);
-		if(specification == null && StringUtils.hasText(keyword)) {
+		if(specification == null && StringUtil.hasText(keyword)) {
 			specification = new SpecificationImpl<T>(keywords);
 		}
 		
@@ -144,9 +144,7 @@ public abstract class CrudServiceImpl<T extends IdEntity, R extends CrudReposito
 	
 	@Override
 	public T save(T entity) {
-		this.beforeSave(entity);
-		this.repository.save(entity);
-		this.afterSave(entity);
+		entity = this.repository.save(entity);
 		return entity;
 	}
 
@@ -158,9 +156,7 @@ public abstract class CrudServiceImpl<T extends IdEntity, R extends CrudReposito
 	@Override
 	public void delete(T entity) {
 		if (entity!=null && !entity.isNew()) {
-			this.beforeDelete(entity);
 			this.repository.delete(entity);
-			this.afterDelete(entity);
 		}
 	}
 
@@ -190,7 +186,7 @@ public abstract class CrudServiceImpl<T extends IdEntity, R extends CrudReposito
 		List<V> dtos = new ArrayList<V>();
 		List<T> entitys = (List<T>) this.findAll();
 		for (IdEntity entity : entitys) {
-			V dto = EntityUtils.copy(dtoClass, entity);
+			V dto = EntityUtil.copy(dtoClass, entity);
 			if (dto != null) {
 				dtos.add(dto);
 			}
@@ -200,12 +196,12 @@ public abstract class CrudServiceImpl<T extends IdEntity, R extends CrudReposito
 
 	@Override
 	public <V extends IdEntity> V findOne(Class<V> dtoClass, Long id) {
-		return EntityUtils.copy(dtoClass, this.findOne(id));
+		return EntityUtil.copy(dtoClass, this.findOne(id));
 	}
 
 	@Override
 	public <V extends IdEntity> T save(Class<V> dtoClass, Class<T> doMainClass, V dto) {
-		T entity = EntityUtils.copy(doMainClass, dto);
+		T entity = EntityUtil.copy(doMainClass, dto);
 		return this.save(entity);
 	}
 
@@ -213,7 +209,7 @@ public abstract class CrudServiceImpl<T extends IdEntity, R extends CrudReposito
 	public <V extends IdEntity> Iterable<T> save(Class<V> dtoClass, Class<T> doMainClass, Iterable<V> dtos) {
 		List<T> entitys = new ArrayList<T>();
 		for (V dto : dtos) {
-			T entity = EntityUtils.copy(doMainClass, dto);
+			T entity = EntityUtil.copy(doMainClass, dto);
 			if (entity != null) {
 				entitys.add(entity);
 			}
@@ -224,15 +220,6 @@ public abstract class CrudServiceImpl<T extends IdEntity, R extends CrudReposito
 	
 	public void afterLoad(T entity) {}
 	public SpecificationImpl<T> beforeGetItems(int paginationType, Pageable pageable, String[] keywords, Object... args) { return null;}
-
 	public void afterGetItems(Iterable<T> entitys) {}
-	
-	public void beforeSave(T entity) {}
-	public void beforeSave(Iterable<T> entitys) {}
-	public void afterSave(T entity) {}
-	public void afterSave(Iterable<T> entitys) {}
-	
-	public void beforeDelete(T entity) {}
-	public void afterDelete(T entity) {}
 	
 }
